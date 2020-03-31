@@ -21,13 +21,20 @@ jobs:
         with:
           node-version: 12.x
 
-      - name: Setup Hexo env # 初始构建环境
+      - name: Setup Build env # 初始构建环境
         run: |
           npm install
 
       - name: Generate public files # 生成预发布文件
         run: |
           npm run build
+
+      - name: Add CNAME # CNAME
+        env:
+          GH_CNAME: ${{ secrets.GH_CNAME }} # GitHub 仓库地址
+        run: |
+          cd ./dist/d3-gallery/
+          echo ${GH_CNAME} > CNAME
 
       - name: Deploy # 发布
         env:
